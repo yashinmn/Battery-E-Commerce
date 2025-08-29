@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Contact Us - Battery Store</title>
+  <link rel="stylesheet" href="/styles.css"/>
+</head>
+<body>
+<header>
+  <div class="logo"><a href="/">🔋 Battery Store</a></div>
+  <nav>
+    <a href="/products.html">Products</a>
+    <a href="/contact.html">Contact</a>
+  </nav>
+  <div class="nav-right">
+    <a href="/cart.html">Cart</a>
+    <a href="/login.html" id="login-link">Login</a>
+    <a href="/register.html" id="register-link">Register</a>
+    <span class="small" id="user-label"></span>
+  </div>
+</header>
+
+<div class="container">
+  <h1>Contact Us</h1>
+  <form class="form" id="contact-form">
+    <input id="name" placeholder="Your name" required/>
+    <input id="email" type="email" placeholder="Email" required/>
+    <textarea id="message" placeholder="Message" rows="5" required></textarea>
+    <button type="submit">Send</button>
+    <div id="contact-status"></div>
+  </form>
+</div>
+
+
+<script src="/js/app.js"></script>
+<script>
+document.getElementById('contact-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const payload = {
+    name: document.getElementById('name').value,
+    email: document.getElementById('email').value,
+    message: document.getElementById('message').value
+  };
+  const res = await fetch('/api/contact', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+  const out = await res.json();
+  const statusEl = document.getElementById('contact-status');
+  statusEl.textContent = out.message || out.error;
+});
+</script>
+<script src="js/footer.js"></script>
+</body>
+</html>

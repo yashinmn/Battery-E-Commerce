@@ -1,0 +1,215 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Find Your Battery</title>
+  <link rel="stylesheet" href="/styles.css"/>
+</head>
+<body>
+<header>
+  <div class="logo"><a href="/">🔋 Battery Store</a></div>
+  <nav>
+    <a href="/products.html">Products</a>
+    <a href="/battery-filter.html">Choose Battery</a>
+    <a href="/contact.html">Contact</a>
+  </nav>
+  <div class="nav-right">
+    <a href="/cart.html">Cart</a>
+    <a href="/login.html" id="login-link">Login</a>
+    <a href="/register.html" id="register-link">Register</a>
+    <span class="small" id="user-label"></span>
+  </div>
+</header>
+
+<!-- Main Content -->
+<section class="container">
+  <h1>Find the Right Battery</h1>
+  <p>Select your vehicle details below to find a compatible battery.</p>
+
+  <div class="filter-form-wrapper">
+    <form class="filter-form" method="GET" action="#">
+      <!-- Vehicle Type -->
+      <div class="filter-group">
+        <label for="vehicle_type">Select Vehicle</label>
+        <select name="vehicle_type" id="vehicle_type">
+          <option value="">-- Choose Vehicle Type --</option>
+          <option value="cars">Cars</option>
+        </select>
+      </div>
+
+
+
+      <!-- Make -->
+      <div class="filter-group">
+        <label for="make">Vehicle Make</label>
+        <select name="make" id="make">
+          <option value="">-- Choose Make --</option>
+        </select>
+      </div>
+
+      <!-- Model -->
+      <div class="filter-group">
+        <label for="model">Model</label>
+        <select name="model" id="model">
+          <option value="">-- Choose Model --</option>
+        </select>
+      </div>
+
+      <!-- Fuel -->
+      <div class="filter-group">
+        <label for="fuel">Fuel</label>
+        <select name="fuel" id="fuel">
+          <option value="">-- Choose Fuel Type --</option>
+          <option value="diesel">Diesel</option>
+          <option value="petrol">Petrol</option>
+        </select>
+      </div>
+
+      <!-- Submit -->
+      <div class="filter-group" style="align-self: flex-end;">
+        <button type="submit">Find Now</button>
+      </div>
+    </form>
+  </div>
+  <!-- Results Section -->
+<div id="results" style="margin-top: 30px;"></div>
+</section>
+
+
+
+<style>
+  .filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: flex-start;
+    margin-top: 20px;
+  }
+
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 180px;
+  }
+
+  .filter-group label {
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: #475435;
+  }
+
+  .filter-group select {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+
+  .filter-form button {
+    height: 40px;
+    padding: 0 20px;
+    background-color: #fcd34d;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #475435;
+  }
+</style>
+
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function () {
+
+      const makeOptions = {
+      cars: ['Tata', 'Suzuki', 'Toyota', 'Honda', 'Hyundai']
+    };
+
+    const makeOrigin = {
+      country:[]
+    };
+
+    const modelOptions = {
+      Tata: ['Sumo', 'Indica', 'Harrier'],
+      Suzuki: ['Swift', 'Baleno'],
+      Toyota: ['Innova', 'Qualis'],
+      Honda: ['City', 'CRV'],
+      Hyundai: ['i10', 'Creta']
+    };
+
+    const products = [
+      { vehicle: 'cars', make: 'Tata', model: 'Indica', fuel: 'petrol', name: 'Tata Indica Petrol Battery', price: '₹4500' },
+      { vehicle: 'cars', make: 'Toyota', model: 'Innova', fuel: 'diesel', name: 'Toyota Innova Diesel Battery', price: '₹6500' },
+      { vehicle: 'cars', make: 'Honda', model: 'City', fuel: 'petrol', name: 'Honda City Petrol Battery', price: '₹5000' }
+    ];
+
+    const vehicleTypeSelect = document.getElementById('vehicle_type');
+    const makeSelect = document.getElementById('make');
+    const modelSelect = document.getElementById('model');
+    const fuelSelect = document.getElementById('fuel');
+    const form = document.querySelector('.filter-form');
+    const resultsDiv = document.getElementById('results');
+
+    // populate makes when type changes
+    vehicleTypeSelect.addEventListener('change', function () {
+      const selectedType = this.value;
+      makeSelect.innerHTML = '<option value="">-- Choose Make --</option>';
+      modelSelect.innerHTML = '<option value="">-- Choose Model --</option>';
+
+      if (makeOptions[selectedType]) {
+        makeOptions[selectedType].forEach(make => {
+          const opt = document.createElement('option');
+          opt.value = make;
+          opt.textContent = make;
+          makeSelect.appendChild(opt);
+        });
+      }
+    });
+
+    // populate models when make changes
+    makeSelect.addEventListener('change', function () {
+      const selectedMake = this.value;
+      modelSelect.innerHTML = '<option value="">-- Choose Model --</option>';
+
+      if (modelOptions[selectedMake]) {
+        modelOptions[selectedMake].forEach(model => {
+          const opt = document.createElement('option');
+          opt.value = model;
+          opt.textContent = model;
+          modelSelect.appendChild(opt);
+        });
+      }
+    });
+
+    // Handle form submit → show results
+    form.addEventListener('submit', function (e) {
+      e.preventDefault(); // stop page reload
+      resultsDiv.innerHTML = ''; // clear old results
+
+      const selectedType = vehicleTypeSelect.value;
+      const selectedMake = makeSelect.value;
+      const selectedModel = modelSelect.value;
+      const selectedFuel = fuelSelect.value;
+
+      const filtered = products.filter(p =>
+        (!selectedType || p.vehicle === selectedType) &&
+        (!selectedMake || p.make === selectedMake) &&
+        (!selectedModel || p.model === selectedModel) &&
+        (!selectedFuel || p.fuel === selectedFuel)
+      );
+
+      if (filtered.length === 0) {
+        resultsDiv.innerHTML = '<p>No batteries found. Try different filters.</p>';
+      } else {
+        filtered.forEach(p => {
+          const item = document.createElement('div');
+          item.classList.add('product-card');
+          item.innerHTML = `<h3>${p.name}</h3><p>${p.price}</p><button>Add to Cart</button>`;
+          resultsDiv.appendChild(item);
+        });
+      }
+    });
+  });
+</script>
+<script src="js/footer.js"></script>
+</body>
+</html>

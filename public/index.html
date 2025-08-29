@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Battery Store</title>
+  <link rel="stylesheet" href="/styles.css"/>
+</head>
+<body>
+<header>
+  <div class="logo"><a href="/">🔋 Battery Store</a></div>
+  <nav>
+    <a href="/products.html">Products</a>
+    <a href="/contact.html">Contact</a>
+  </nav>
+  <div class="nav-right">
+    <a href="/cart.html">Cart</a>
+    <a href="/login.html" id="login-link">Login</a>
+    <a href="/register.html" id="register-link">Register</a>
+    <span class="small" id="user-label"></span>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <span class="badge">New</span>
+    <h1>Power up every ride & home</h1>
+    <p>Automotive, two-wheeler, inverter, and solar batteries—quality you can trust.</p>
+    <a class="btn" href="/battery-filter.html">Shop Batteries</a>
+  </div>
+</section>
+<div class="container">
+  <h2>Featured</h2>
+  
+  <div id="featured" class="grid"></div>
+</div>
+
+
+
+<script src="/js/app.js"></script>
+<script>
+  // Load a few highlighted products
+  fetch('/api/products').then(r=>r.json()).then(products => {
+    const featured = products.slice(0,4);
+    const el = document.getElementById('featured');
+    el.innerHTML = featured.map(p => `
+      <div class="card">
+        <img src="${p.image || '/images/battery.png'}" alt=""/>
+        <div class="p">
+          <div><strong>${p.name}</strong></div>
+          <div class="price">$${p.price.toFixed(2)}</div>
+          <a class="btn" href="/product.html?id=${p.id}">View</a>
+        </div>
+      </div>
+    `).join('');
+  });
+</script>
+<script src="js/footer.js"></script>
+
+</body>
+</html>

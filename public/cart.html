@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Your Cart - Battery Store</title>
+  <link rel="stylesheet" href="/styles.css"/>
+</head>
+<body>
+<header>
+  <div class="logo"><a href="/">🔋 Battery Store</a></div>
+  <nav>
+    <a href="/products.html">Products</a>
+    <a href="/contact.html">Contact</a>
+  </nav>
+  <div class="nav-right">
+    <a href="/cart.html">Cart</a>
+    <a href="/login.html" id="login-link">Login</a>
+    <a href="/register.html" id="register-link">Register</a>
+    <span class="small" id="user-label"></span>
+  </div>
+</header>
+
+<div class="container">
+  <h1>Your Cart</h1>
+  <div id="cart-items"></div>
+  <div style="margin-top:12px;">
+    <button id="checkout">Checkout</button>
+  </div>
+  <div id="cart-status" class="small"></div>
+</div>
+<script src="js/footer.js"></script>
+
+<script src="/js/app.js"></script>
+<script src="/js/cart.js"></script>
+</body>
+</html>
